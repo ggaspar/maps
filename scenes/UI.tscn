@@ -1,0 +1,87 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://assets/Font/Roboto-Bold.tres" type="DynamicFont" id=1]
+[ext_resource path="res://assets/Font/Roboto-Regular.tres" type="DynamicFont" id=2]
+[ext_resource path="res://scripts/UI.gd" type="Script" id=3]
+
+[node name="UI" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 864.0
+margin_bottom = 6.10352e-05
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_right = 1026.0
+margin_bottom = 96.0
+color = Color( 0.0235294, 0.0431373, 0.196078, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="buttons" type="VBoxContainer" parent="."]
+margin_left = 818.0
+margin_top = 1.0
+margin_right = 997.0
+margin_bottom = 97.0
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="EndTurnButton" type="Button" parent="buttons"]
+margin_top = 24.0
+margin_right = 179.0
+margin_bottom = 71.0
+custom_fonts/font = ExtResource( 1 )
+text = "End Turn"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="turn" type="Label" parent="."]
+margin_left = 643.993
+margin_top = 25.6258
+margin_right = 763.993
+margin_bottom = 61.6258
+custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0.435294, 0.517647, 0.647059, 1 )
+text = "Turn 375"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="unit" type="VBoxContainer" parent="."]
+margin_left = 66.0
+margin_right = 222.0
+margin_bottom = 96.0
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="name" type="Label" parent="unit"]
+margin_top = 10.0
+margin_right = 156.0
+margin_bottom = 46.0
+custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0.435294, 0.517647, 0.647059, 1 )
+text = "Unit XXX"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="moves" type="Label" parent="unit"]
+margin_top = 50.0
+margin_right = 156.0
+margin_bottom = 86.0
+custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0.898039, 0.717647, 0.00392157, 1 )
+text = "Moves : 2/3"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="pressed" from="buttons/EndTurnButton" to="." method="_on_EndTurnButton_pressed"]
