@@ -7,3 +7,4 @@ func initialize(new_target):
 	
 func _process(delta):
 	position = target.position
+

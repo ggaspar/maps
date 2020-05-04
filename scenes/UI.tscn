@@ -42,6 +42,36 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="actions" type="VBoxContainer" parent="."]
+margin_left = 387.0
+margin_top = 2.0
+margin_right = 566.0
+margin_bottom = 97.0
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="attackButton" type="Button" parent="actions"]
+margin_top = 3.0
+margin_right = 179.0
+margin_bottom = 45.0
+custom_fonts/font = ExtResource( 2 )
+text = "Attack"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LookUpButton" type="Button" parent="actions"]
+margin_top = 49.0
+margin_right = 179.0
+margin_bottom = 91.0
+custom_fonts/font = ExtResource( 2 )
+text = "Look Up"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="turn" type="Label" parent="."]
 margin_left = 643.993
 margin_top = 25.6258
@@ -85,3 +115,5 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 [connection signal="pressed" from="buttons/EndTurnButton" to="." method="_on_EndTurnButton_pressed"]
+[connection signal="pressed" from="actions/attackButton" to="." method="_on_attackButton_pressed"]
+[connection signal="pressed" from="actions/LookUpButton" to="." method="_on_LookUpButton_pressed"]

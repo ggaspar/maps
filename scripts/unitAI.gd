@@ -9,55 +9,87 @@ var otherTeamUnits : Array
 var targetPosition
 
 func definePlan(nav2D, line_2d):
-	get_goal()
+	var tilemap = nav2D.get_node("TileMap")
+	var unitsMap = nav2D.get_node("Units")
+	get_goal(tilemap)
 	if targetPosition:
-		var tilemap = nav2D.get_node("TileMap")
-		var path = tilemap.get_path_astart(unit.currentPos, targetPosition)
+
+		var path = tilemap.get_path_astart(unit.current_position, targetPosition)
 		var path_in_world : Array
 		for p in path:
 			path_in_world.append(tilemap.map_to_world(p))
 	
 	
-		#print("distance", unit.currentPos.distance_to(enemy.currentPos))
-		var currentPos = unit.currentPos
+		#print("distance", unit.current_position.distance_to(enemy.current_position))
+		var current_position = unit.current_position
 		actions.clear()
 		for turn in range(1,4):
 			if path.size() <= turn:
 				continue
-			print(path)
+			
 			var target = path[turn]
-			tilemap = nav2D.get_node("TileMap")
-			var moveVector = target - currentPos
+			var moveVector = target - current_position
 			moveVector.normalized()
 			var choosenDirection
-			if moveVector.x == 1 and tilemap.get_cell(unit.currentPos.x + 1, currentPos.y):
+			var action = Action.new()
+			if moveVector.x == 1 and tilemap.get_cell(unit.current_position.x + 1, current_position.y):
 				choosenDirection = 'right'
 				moveVector  = Vector2(1,0)
-			if moveVector.x == -1 and tilemap.get_cell(unit.currentPos.x - 1, currentPos.y):
+				action.actionType = 'move'
+				if unitsMap.get_cellv(unit.current_position + moveVector) == 0:
+					action.actionType = 'attack'
+					
+			if moveVector.x == -1 and tilemap.get_cell(unit.current_position.x - 1, current_position.y):
 				choosenDirection = 'left'
 				moveVector  = Vector2(-1,0)
-			if moveVector.y == -1 and tilemap.get_cell(unit.currentPos.x, currentPos.y - 1):
+				action.actionType = 'move'
+				if unitsMap.get_cellv(unit.current_position + moveVector) == 0:
+					action.actionType = 'attack'
+					
+			if moveVector.y == -1 and tilemap.get_cell(unit.current_position.x, current_position.y - 1):
 				choosenDirection = 'up'
 				moveVector  = Vector2(0,-1)
-			if moveVector.y == 1 and tilemap.get_cell(unit.currentPos.x, currentPos.y + 1):
+				action.actionType = 'move'
+				if unitsMap.get_cellv(unit.current_position + moveVector) == 0:
+					action.actionType = 'attack'
+					
+			if moveVector.y == 1 and tilemap.get_cell(unit.current_position.x, current_position.y + 1):
 				choosenDirection = 'down'
 				moveVector  = Vector2(0,1)
+				action.actionType = 'move'
+				if unitsMap.get_cellv(unit.current_position + moveVector) == 0:
+					action.actionType = 'attack'
 			
-			var action = Action.new()
-			action.actionType = 'move'
+
 			action.parameters.append(choosenDirection)
 			actions.push_back(action)
 			if action.actionType:
-				currentPos = currentPos + moveVector
+				current_position = current_position + moveVector
 		line_2d.points = path_in_world
 		
 	var action = Action.new()
 	action.actionType = 'endTurn'
 	actions.push_back(action)
-	print('DEFINING PLAN: ', actions)
 	
-func get_goal():
+func get_goal(tilemap):
 	for enemy in otherTeamUnits:
-		if enemy.currentPos.distance_to(unit.currentPos) <= 6:
-			targetPosition = enemy.currentPos
-			break
+		if enemy.current_position.distance_to(unit.current_position) <= 6:
+			targetPosition = enemy.current_position
+			print('found player')
+			return
+	for otherUnit in sameTeamUnits:
+		if otherUnit.current_position !=  unit.current_position and otherUnit.current_position.distance_to(unit.current_position) <= 6:
+			targetPosition = otherUnit.current_position
+			print('found friend')
+			return
+	
+	var cells = tilemap.get_used_cells()
+
+	while not targetPosition or targetPosition == unit.current_position:
+		var target_tile = cells[randi() % cells.size()]
+		if tilemap.get_cellv(target_tile):
+			targetPosition = target_tile
+			print('found target')
+			return
+			
+	print('found nothing')

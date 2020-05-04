@@ -4,4 +4,12 @@
 
 [node name="DebugLayer" type="CanvasLayer" parent="."]
 
+[node name="cell" type="Label" parent="DebugLayer"]
+margin_right = 40.0
+margin_bottom = 14.0
+text = "CELL : "
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Line2D" type="Line2D" parent="."]
